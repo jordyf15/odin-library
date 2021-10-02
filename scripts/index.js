@@ -1,3 +1,38 @@
+let myLibrary = [];
+
+function Book(author, title, pages, read) {
+    this.id = myLibrary.length;
+    this.author = author;
+    this.title = title;
+    this.pages = pages;
+    this.read = read;
+}
+
+function addBookToLibrary() {
+    const author = document.querySelector('#author-input').value;
+    const title = document.querySelector('#title-input').value;
+    const pages = document.querySelector('#pages-input').value;
+    const read = document.querySelector('#read-cb').checked;
+
+    const valid = validate(author, title, pages, read);
+
+    if(valid) {
+        const newBook = new Book(author, title, pages, read);
+        myLibrary.push(newBook);
+        const main = document.querySelector('main');
+        const newBookForm = document.querySelector('#new-book-form');
+        main.removeChild(newBookForm);
+    } else{
+        const alertMsg = document.querySelector('#alert-msg');
+        alertMsg.textContent = 'Please fill all form\'s columns.';
+    }
+}
+
+function validate(author, title, pages, read) {
+    if(author.length == 0 || title.length == 0 || pages.length == 0 || isNaN(pages)) return false
+    else return true;
+}
+
 function displayForm() {
     const newBookForm = document.createElement('form');
     newBookForm.id='new-book-form';
@@ -43,8 +78,10 @@ function displayForm() {
     newBookForm.appendChild(readContainer);
 
     const submitBtn = document.createElement('button');
-    submitBtn.textContent = 'Add book';
+    submitBtn.textContent = 'Add';
+    submitBtn.type = 'button';
     submitBtn.id = 'submitBtn';
+    submitBtn.addEventListener('click', addBookToLibrary)
     newBookForm.appendChild(submitBtn);
 
     const alertMsg = document.createElement('p');

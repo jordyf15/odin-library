@@ -12,6 +12,15 @@ Book.prototype.toggleRead = function() {
     this.read = !this.read;
 }
 
+if(localStorage.getItem('myLibrary')) {
+    const storedMyLibrary = JSON.parse(localStorage.getItem('myLibrary'));
+    storedMyLibrary.forEach((book) => {
+        const {author, title, pages, read} = book;
+        const newBook = new Book(author, title, pages, read);
+        myLibrary.push(newBook);
+    });
+}
+
 function addBookToLibrary() {
     const author = document.querySelector('#author-input').value;
     const title = document.querySelector('#title-input').value;
@@ -29,6 +38,9 @@ function addBookToLibrary() {
         const newBookCard = createBookCard(newBook);
         const bookList = document.querySelector('#book-list');
         bookList.appendChild(newBookCard);
+
+        const jsonMyLibrary = JSON.stringify(myLibrary);
+        localStorage.setItem('myLibrary', jsonMyLibrary);
     } else{
         const alertMsg = document.querySelector('#alert-msg');
         alertMsg.textContent = 'Please fill all form\'s columns.';

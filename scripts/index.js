@@ -116,17 +116,12 @@ function createBookCard({id, author, title, pages, read}) {
     bookPages.textContent = `${pages} pages`;
     bookCard.appendChild(bookPages);
 
-    const bookRead = document.createElement('button');
-    bookRead.className = 'book-read';
-    bookRead.id = `book-read-${id}`;
-    bookRead.textContent = read? 'Read' : 'Not read'; 
-    bookRead.addEventListener('click', function() {
-        const bookIndex = parseInt(this.id.split('-')[2]);
-        const editedBook = myLibrary[bookIndex];
-        editedBook.toggleRead();
-        this.textContent = editedBook.read ? 'Read' : 'Not read';
-    });
-    bookCard.appendChild(bookRead);
+    const bookReadBtn = document.createElement('button');
+    bookReadBtn.className = 'book-read';
+    bookReadBtn.id = `book-read-${id}`;
+    bookReadBtn.textContent = read? 'Read' : 'Not read'; 
+    bookReadBtn.addEventListener('click', toggleReadBook);
+    bookCard.appendChild(bookReadBtn);
 
     const removeBookBtn = document.createElement('button');
     removeBookBtn.className = 'remove-book-btn';
@@ -136,6 +131,13 @@ function createBookCard({id, author, title, pages, read}) {
     bookCard.appendChild(removeBookBtn);
 
     return bookCard;
+}
+
+function toggleReadBook() {
+    const bookIndex = parseInt(this.id.split('-')[2]);
+    const editedBook = myLibrary[bookIndex];
+    editedBook.toggleRead();
+    this.textContent = editedBook.read ? 'Read' : 'Not read';
 }
 
 function removeBook() {

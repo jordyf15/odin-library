@@ -7,6 +7,9 @@ function Book(author, title, pages, read) {
     this.pages = pages;
     this.read = read;
 }
+Book.prototype.toggleRead = function() {
+    this.read = !this.read;
+}
 
 function addBookToLibrary() {
     const author = document.querySelector('#author-input').value;
@@ -22,6 +25,9 @@ function addBookToLibrary() {
         const main = document.querySelector('main');
         const newBookForm = document.querySelector('#new-book-form');
         main.removeChild(newBookForm);
+        const newBookCard = createBookCard(newBook);
+        const bookList = document.querySelector('#book-list');
+        bookList.appendChild(newBookCard);
     } else{
         const alertMsg = document.querySelector('#alert-msg');
         alertMsg.textContent = 'Please fill all form\'s columns.';
@@ -90,6 +96,39 @@ function displayForm() {
 
     const main = document.querySelector('main');
     main.appendChild(newBookForm);
+}
+
+function createBookCard({id, author, title, pages, read}) {
+    const bookCard = document.createElement('li');
+    bookCard.id = `book-${id}`;
+    const bookAuthor = document.createElement('p');
+    bookAuthor.className='book-author';
+    bookAuthor.textContent = author;
+    bookCard.appendChild(bookAuthor);
+
+    const bookTitle = document.createElement('p');
+    bookTitle.className='book-title';
+    bookTitle.textContent = title;
+    bookCard.appendChild(bookTitle);
+
+    const bookPages = document.createElement('p');
+    bookPages.className='book-pages';
+    bookPages.textContent = `${pages} pages`;
+    bookCard.appendChild(bookPages);
+
+    const bookRead = document.createElement('button');
+    bookRead.className = 'book-read';
+    bookRead.id = `book-read-${id}`;
+    bookRead.textContent = read? 'Read' : 'Not read'; 
+    bookRead.addEventListener('click', function() {
+        const bookIndex = parseInt(this.id.split('-')[2]);
+        const editedBook = myLibrary[bookIndex];
+        editedBook.toggleRead();
+        this.textContent = editedBook.read ? 'Read' : 'Not read';
+    });
+    bookCard.appendChild(bookRead);
+
+    return bookCard;
 }
 
 const addBookBtn = document.querySelector('#add-book');

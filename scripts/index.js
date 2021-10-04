@@ -7,6 +7,7 @@ function Book(author, title, pages, read) {
     this.pages = pages;
     this.read = read;
 }
+
 Book.prototype.toggleRead = function() {
     this.read = !this.read;
 }
@@ -151,4 +152,10 @@ function removeBook() {
 const addBookBtn = document.querySelector('#add-book');
 addBookBtn.addEventListener('click', () => {
     displayForm();
+});
+
+const bookList = document.querySelector('#book-list');
+myLibrary.forEach(function(book) {
+    const bookCard = createBookCard(book);
+    bookList.appendChild(bookCard);
 });

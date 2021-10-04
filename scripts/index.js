@@ -128,7 +128,22 @@ function createBookCard({id, author, title, pages, read}) {
     });
     bookCard.appendChild(bookRead);
 
+    const removeBookBtn = document.createElement('button');
+    removeBookBtn.className = 'remove-book-btn';
+    removeBookBtn.id = `remove-book-${id}`;
+    removeBookBtn.textContent = 'Remove';
+    removeBookBtn.addEventListener('click', removeBook);
+    bookCard.appendChild(removeBookBtn);
+
     return bookCard;
+}
+
+function removeBook() {
+    const deletedBookIndex = parseInt(this.id.split('-')[2]);
+    myLibrary.splice(deletedBookIndex, 1);
+    const deletedBookCard = document.querySelector(`#book-${deletedBookIndex}`);
+    const bookList = document.querySelector('#book-list');
+    bookList.removeChild(deletedBookCard);
 }
 
 const addBookBtn = document.querySelector('#add-book');

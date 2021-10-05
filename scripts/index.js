@@ -33,8 +33,8 @@ function addBookToLibrary() {
         const newBook = new Book(author, title, pages, read);
         myLibrary.push(newBook);
         const main = document.querySelector('main');
-        const newBookForm = document.querySelector('#new-book-form');
-        main.removeChild(newBookForm);
+        const formContainer = document.querySelector('#form-container');
+        main.removeChild(formContainer);
         const newBookCard = createBookCard(newBook);
         const bookList = document.querySelector('#book-list');
         bookList.appendChild(newBookCard);
@@ -53,8 +53,14 @@ function validate(author, title, pages, read) {
 }
 
 function displayForm() {
+    const formContainer = document.createElement('div');
+    formContainer.id = 'form-container';
+    
     const newBookForm = document.createElement('form');
     newBookForm.id='new-book-form';
+    newBookForm.addEventListener('click', (e)=>{
+        e.stopPropagation();
+    });
 
     const formTitle = document.createElement('h2');
     formTitle.textContent = 'Add new book';
@@ -85,21 +91,21 @@ function displayForm() {
     const readContainer = document.createElement('div');
     readContainer.id = 'read-container';
 
-    const readSpan = document.createElement('span');
-    readSpan.textContent = 'Have you read this? ';
-    readSpan.id = 'read-span';
     const readCheckbox = document.createElement('input');
     readCheckbox.type = 'checkbox';
     readCheckbox.id='read-cb';
+    const readSpan = document.createElement('span');
+    readSpan.textContent = 'Have you read this? ';
+    readSpan.id = 'read-span';
 
-    readContainer.appendChild(readSpan);
     readContainer.appendChild(readCheckbox);
+    readContainer.appendChild(readSpan);
     newBookForm.appendChild(readContainer);
 
     const submitBtn = document.createElement('button');
     submitBtn.textContent = 'Add';
     submitBtn.type = 'button';
-    submitBtn.id = 'submitBtn';
+    submitBtn.id = 'submit-btn';
     submitBtn.addEventListener('click', addBookToLibrary)
     newBookForm.appendChild(submitBtn);
 
@@ -108,41 +114,52 @@ function displayForm() {
     newBookForm.appendChild(alertMsg);
 
     const main = document.querySelector('main');
-    main.appendChild(newBookForm);
+    formContainer.appendChild(newBookForm);
+    main.appendChild(formContainer);
+    formContainer.addEventListener('click',()=>{
+        main.removeChild(formContainer);
+    })
 }
 
 function createBookCard({id, author, title, pages, read}) {
     const bookCard = document.createElement('li');
+    bookCard.className = 'book-cards'
     bookCard.id = `book-${id}`;
+
+    const bookTitle = document.createElement('p');
+    bookTitle.className='book-title';
+    bookTitle.textContent = `"${title}"`;
+    bookCard.appendChild(bookTitle);
+
     const bookAuthor = document.createElement('p');
     bookAuthor.className='book-author';
     bookAuthor.textContent = author;
     bookCard.appendChild(bookAuthor);
 
-    const bookTitle = document.createElement('p');
-    bookTitle.className='book-title';
-    bookTitle.textContent = title;
-    bookCard.appendChild(bookTitle);
-
     const bookPages = document.createElement('p');
     bookPages.className='book-pages';
-    bookPages.textContent = `${pages} pages`;
+    bookPages.textContent = `${pages} Pages`;
     bookCard.appendChild(bookPages);
 
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className='book-card-btn-container';
+
+
     const bookReadBtn = document.createElement('button');
-    bookReadBtn.className = 'book-read';
+    bookReadBtn.className = 'book-read-btn';
     bookReadBtn.id = `book-read-${id}`;
     bookReadBtn.textContent = read? 'Read' : 'Not read'; 
     bookReadBtn.addEventListener('click', toggleReadBook);
-    bookCard.appendChild(bookReadBtn);
+    buttonContainer.appendChild(bookReadBtn);
 
     const removeBookBtn = document.createElement('button');
     removeBookBtn.className = 'remove-book-btn';
     removeBookBtn.id = `remove-book-${id}`;
     removeBookBtn.textContent = 'Remove';
     removeBookBtn.addEventListener('click', removeBook);
-    bookCard.appendChild(removeBookBtn);
+    buttonContainer.appendChild(removeBookBtn);
 
+    bookCard.appendChild(buttonContainer);
     return bookCard;
 }
 

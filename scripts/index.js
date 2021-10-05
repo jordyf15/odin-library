@@ -168,6 +168,8 @@ function toggleReadBook() {
     const editedBook = myLibrary[bookIndex];
     editedBook.toggleRead();
     this.textContent = editedBook.read ? 'Read' : 'Not read';
+    const jsonMyLibrary = JSON.stringify(myLibrary);
+    localStorage.setItem('myLibrary', jsonMyLibrary);
 }
 
 function removeBook() {
@@ -176,6 +178,8 @@ function removeBook() {
     const deletedBookCard = document.querySelector(`#book-${deletedBookIndex}`);
     const bookList = document.querySelector('#book-list');
     bookList.removeChild(deletedBookCard);
+    const jsonMyLibrary = JSON.stringify(myLibrary);
+    localStorage.setItem('myLibrary', jsonMyLibrary);
 }
 
 const addBookBtn = document.querySelector('#add-book');

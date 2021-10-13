@@ -1,15 +1,22 @@
 let myLibrary = [];
 
-function Book(author, title, pages, read) {
-    this.id = myLibrary.length;
-    this.author = author;
-    this.title = title;
-    this.pages = pages;
-    this.read = read;
-}
+class Book{
+    id;
+    author;
+    title;
+    pages;
+    read;
+    constructor(author, title, pages, read){
+        this.id = myLibrary.length;
+        this.author = author;
+        this.title = title;
+        this.pages = pages;
+        this.read = read; 
+    }
 
-Book.prototype.toggleRead = function() {
-    this.read = !this.read;
+    toggleRead(){
+        this.read = !this.read;
+    }
 }
 
 if(localStorage.getItem('myLibrary')) {
